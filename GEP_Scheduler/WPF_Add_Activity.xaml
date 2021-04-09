@@ -1,0 +1,44 @@
+﻿<Window x:Class="GEP_Scheduler.WPF_Add_Activity"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GEP_Scheduler"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="Add Activity" Height="410" ResizeMode="NoResize" WindowStyle="SingleBorderWindow" Background="#ff292929" Width="580" WindowStartupLocation="CenterScreen" GotFocus="Window_GotFocus" FontFamily="Century Gothic" Loaded="Window_Loaded">
+    <Grid Margin="-16,0,79,7">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="283*"/>
+            <RowDefinition Height="128*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="71*"/>
+            <ColumnDefinition Width="476*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="18*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="btn_cancel" Background="DarkRed" Content="Cancel" Grid.Column="1" Margin="109,10,236,73" Click="Btn_cancel_Click" Height="Auto" Grid.Row="1" FontFamily="Century Gothic" />
+        <Button x:Name="btn_add" Background="ForestGreen" Content="Add" Grid.Column="1" Margin="311,10,40,73" Click="btn_add_click" Height="Auto" Grid.Row="1" FontFamily="Century Gothic" />
+        <Label Content="Activity : " x:Name="txtactivity" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Margin="10,12,0,0" Height="24" Width="56" FontFamily="Century Gothic"/>
+        <Label Content="Date :" x:Name="txtdate" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="1" Margin="27,121,0,0" RenderTransformOrigin="-0.458,1.292" Height="24" Width="48" FontFamily="Century Gothic"/>
+        <DatePicker x:Name="datepicker" Background="White" Grid.Column="1" HorizontalAlignment="Left" Margin="84,120,0,0" VerticalAlignment="Top" Width="72" Height="25" Foreground="White" />
+        <Label Content="Priority :" Grid.Column="1" HorizontalAlignment="Left" Margin="22,184,0,0" VerticalAlignment="Top" Height="24" Width="52"/>
+        <ComboBox x:Name="cbpriority" Grid.Column="1" Background="White" SelectedIndex="0" HorizontalAlignment="Left" Margin="79,184,0,0" VerticalAlignment="Top" Width="120" Height="25" >
+            <ComboBoxItem Content="Low" Tag="low" />
+            <ComboBoxItem Content="Normal" Tag="normal" />
+            <ComboBoxItem Content="High" Tag="high" />
+        </ComboBox>
+        <RichTextBox x:Name="rtxtdesc" Grid.Column="1" Background="White" HorizontalAlignment="Left" Height="86" Margin="79,12,-26,0" VerticalAlignment="Top" Width="394" TextChanged="Rtxtdesc_TextChanged" Grid.ColumnSpan="4" FontFamily="Century Gothic">
+            <FlowDocument>
+                <Paragraph>
+
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+
+
+
+    </Grid>
+</Window>

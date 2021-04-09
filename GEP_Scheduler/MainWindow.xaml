@@ -1,0 +1,232 @@
+﻿<Window x:Class="GEP_Scheduler.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GEP_Scheduler"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d" 
+        Title="GEP Scheduler" ResizeMode="CanMinimize" Height="678" Width="770.5" Background="#ff292929" WindowStyle="None"
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded" GotFocus="Window_GotFocus" LostFocus="Window_LostFocus" MouseLeave="Window_MouseLeave" MouseMove="Window_MouseMove">
+    <Window.Resources>
+        <Storyboard x:Key="Move0">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="ellipse">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="Move1">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="ellipse">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="40">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="Move2">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="ellipse">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="80">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <BackEase EasingMode="EaseInOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <CollectionViewSource x:Key="activityViewSource" Source="{Binding Activity, Source={}}"/>
+        <CollectionViewSource x:Key="ip_configViewSource" Source="{Binding Ip_config, Source={}}"/>
+        <local:Gep_SchedulerDataSet x:Key="gep_SchedulerDataSet"/>
+        <CollectionViewSource x:Key="ip_configViewSource1" Source="{Binding Ip_config, Source={StaticResource gep_SchedulerDataSet}}"/>
+    </Window.Resources>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="ListBoxItem.Selected" SourceName="item0">
+            <BeginStoryboard x:Name="Move0_BeginStoryboard" Storyboard="{StaticResource Move0}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ListBoxItem.Selected" SourceName="item1">
+            <BeginStoryboard x:Name="Move1_BeginStoryboard" Storyboard="{StaticResource Move1}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ListBoxItem.Selected" SourceName="item2">
+            <BeginStoryboard x:Name="Move2_BeginStoryboard" Storyboard="{StaticResource Move2}"/>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Grid Margin="0,0,10,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="439*"/>
+            <ColumnDefinition Width="311*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="187*"/>
+            <RowDefinition Height="452*"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" BorderBrush="{StaticResource PrimaryHueDarkForegroundBrush}" BorderThickness="0 0 0 1" Loaded="Border_Loaded" Grid.ColumnSpan="2">
+            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Orientation="Horizontal">
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Click="Button_Click_2">
+                    <materialDesign:PackIcon Kind="Minus"/>
+                </Button>
+                <Button Style="{StaticResource MaterialDesignFlatButton}" Click="Button_Click_1">
+                    <materialDesign:PackIcon Kind="Close"/>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1" HorizontalAlignment="Left" Width="726" Grid.ColumnSpan="2" Margin="0,0,0,10" Grid.RowSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="148.5"/>
+                <ColumnDefinition Width="51.5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListView Grid.ColumnSpan="2">
+                <ListViewItem x:Name="item0" Content="Activities" Height="40" Selected="Item0_Selected" FontFamily="Century Gothic"/>
+                <ListViewItem x:Name="item1" Content="Ip Configuration" Height="40" Selected="Item1_Selected" FontFamily="Century Gothic"/>
+                <ListViewItem x:Name="item2" Selected="Item3_Selected" Content="Reports" Height="40" FontFamily="Century Gothic"/>
+            </ListView>
+
+            <Grid Width="0" Margin="0,0,0,-11" HorizontalAlignment="Left" Grid.Column="2" RenderTransformOrigin="0.5,0.5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="578*"/>
+                    <RowDefinition Height="31*"/>
+                    <RowDefinition Height="30*"/>
+                </Grid.RowDefinitions>
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Grid.RenderTransform>
+                <Rectangle Fill="{StaticResource SecondaryAccentForegroundBrush}" Width="1" HorizontalAlignment="Right" Margin="-1,0,0,1" Grid.RowSpan="3"/>
+                <Ellipse x:Name="ellipse" Width="10" Height="10" VerticalAlignment="Top" Fill="{StaticResource PrimaryHueMidBrush}" Margin="0,15,-10,0" 
+                 RenderTransformOrigin="0.5, 0.5" HorizontalAlignment="Left">
+                    <Ellipse.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+            </Grid>
+            <TabControl Grid.Column="2" HorizontalAlignment="Left" Height="634" Margin="3,2,-43,-8" VerticalAlignment="Top" Width="566" RenderTransformOrigin="0.5,0.5" BorderBrush="Transparent" BorderThickness="0" SelectionChanged="TabControl_SelectionChanged">
+                <TabControl.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-0.247"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </TabControl.RenderTransform>
+                <TabItem x:Name="titem1" Header="TabItem" Visibility="Visible">
+                    <Grid Background="#ff292929" DataContext="{StaticResource activityViewSource}" Margin="-9,1,-54,1" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="81*"/>
+                            <ColumnDefinition Width="20*"/>
+                            <ColumnDefinition Width="439*"/>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="37*"/>
+                            <ColumnDefinition Width="40*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="163*"/>
+                            <RowDefinition Height="28*"/>
+                            <RowDefinition Height="92*"/>
+                            <RowDefinition Height="323*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Προσθήκη νέας δραστηριότητας" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Width="186" Grid.ColumnSpan="3" Height="24" FontFamily="Century Gothic" FontSize="11"/>
+                        <Button Content="Αdd" HorizontalAlignment="Left" Margin="102,6,0,0" VerticalAlignment="Top" Width="65" Height="26" Background="ForestGreen" Click="Button_Click_3" Grid.Column="2" FontFamily="Century Gothic">
+                            <Button.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="1.053"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </Button.RenderTransform>
+                        </Button>
+
+                        <Button x:Name="btnupdateactivity" Content="Update" HorizontalAlignment="Center" Margin="174,8,177,129"  Width="88" Height="Auto" Background="DarkGoldenrod" Click="Button_Click_4" Grid.Column="2" FontFamily="Century Gothic" />
+                        <Button x:Name="btndelete" Content="Delete" HorizontalAlignment="Left" Margin="269,8,0,0" VerticalAlignment="Top" Background="DarkRed" Width="77" Height="28" Grid.Column="2" Click="Btndelete_Click" FontFamily="Century Gothic"/>
+                        <DataGrid x:Name="dgvActivity" CanUserAddRows="False" SelectionUnit="FullRow" HorizontalAlignment="Left" Height="554" Margin="10,41,0,0" VerticalAlignment="Top" Width="605" Grid.ColumnSpan="6" Grid.RowSpan="4" AutoGenerateColumns="False" FontFamily="Century Gothic">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Activity_ID}"/>
+                                <DataGridTextColumn Header="Desc" Binding="{Binding Desc}" Width="150" >
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style>
+                                            <Setter Property="TextBlock.TextWrapping" Value="Wrap"></Setter>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Date" Binding="{Binding Date}"/>
+                                <DataGridTextColumn Header="Priority" Binding="{Binding Priority}"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                            </DataGrid.Columns>
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Status}" Value="Done">
+                                            <Setter Property="Background" Value="ForestGreen"></Setter>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Status}" Value="Not Done">
+                                            <Setter Property="Background" Value="DarkRed"></Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+
+                        </DataGrid>
+                        <Button Content="Completed" Background="#FF0288D1" Grid.Column="2" HorizontalAlignment="Left" Margin="351,10,0,0" VerticalAlignment="Top" Width="113" Height="26" Grid.ColumnSpan="3" Click="Button_Click_5" FontFamily="Century Gothic"/>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="titem2" Header="TabItem" Height="22" VerticalAlignment="Top" Visibility="Visible">
+                    <Grid Background="#ff292929" DataContext="{}" Margin="-9,0,-43,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="9*"/>
+                            <ColumnDefinition Width="17*"/>
+                            <ColumnDefinition Width="522*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Προσθήκη νέας IP δικτύου" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontFamily="Century Gothic"/>
+                        <Button x:Name="addip" Content="Αdd" Grid.Column="2" HorizontalAlignment="Left" Margin="175,8,0,0" VerticalAlignment="Top" Width="61" Height="28" Background="ForestGreen" Click="Addip_Click" FontFamily="Century Gothic"/>
+                        <Button Background="DarkGoldenrod" x:Name="btnupdateipconf" Content="Update" Grid.Column="2" HorizontalAlignment="Left" Margin="251,8,0,0" VerticalAlignment="Top" Width="89" Height="28" Click="Btnupdateipconf_Click" FontFamily="Century Gothic"/>
+                        <Button x:Name="btndeleteipconf" Content="Delete" Height="Auto" Click="btndeleteipconfig" Background="DarkRed" Grid.Column="2" Margin="356,8,150,570" FontFamily="Century Gothic"/>
+
+                        <DataGrid x:Name="dgvipconfig" IsHitTestVisible="True" CanUserAddRows="False" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="555" Margin="0,41,0,0" VerticalAlignment="Top" Width="604" Grid.ColumnSpan="2" Grid.Column="1" FontFamily="Century Gothic" MouseDoubleClick="Dgvipconfig_MouseDoubleClick" MouseDown="Dgvipconfig_MouseDown" CellEditEnding="Dgvipconfig_CellEditEnding" MouseLeave="Dgvipconfig_MouseLeave">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="IpID" Binding="{Binding Ip_ID}"/>
+                                <DataGridTextColumn Header="IPIN" Binding="{Binding IP_IN}"/>
+                                <DataGridTextColumn Header="IPOUT" Binding="{Binding IP_OUT}"/>
+                                <DataGridTextColumn Header="PcName" Binding="{Binding Pc_Name}"/>
+                                <DataGridTextColumn Header="Office" Binding="{Binding Office}"/>
+                                <DataGridTextColumn Header="FullName" Binding="{Binding Full_Name}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button Content="Button" Grid.Column="2" HorizontalAlignment="Left" Margin="454,10,0,0" VerticalAlignment="Top" Width="75" Height="26" Click="Button_Click_7"/>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="titem3" Header="TabItem3" Height="22" VerticalAlignment="Top" Visibility="Visible">
+                    <Grid Background="#ff292929" Margin="-9,0,-43,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="139*"/>
+                            <RowDefinition Height="63*"/>
+                        </Grid.RowDefinitions>
+                        <Button Content="Export IP's to PDF" HorizontalAlignment="Left" Margin="67,52,0,0" VerticalAlignment="Top" Width="153" Click="Button_Click_6"/>
+                        <Button Content="Export Activities to PDF" HorizontalAlignment="Left" Margin="256,52,0,0" VerticalAlignment="Top" x:Name="btnexportact" Width="191" Click="Btnexportact_Click"/>
+
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+
+</Window>
