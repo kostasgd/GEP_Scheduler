@@ -144,8 +144,7 @@
                             <RowDefinition Height="92*"/>
                             <RowDefinition Height="323*"/>
                         </Grid.RowDefinitions>
-                        <Label Content="Προσθήκη νέας δραστηριότητας" HorizontalAlignment="Left" Margin="10,8,0,0" VerticalAlignment="Top" Width="186" Grid.ColumnSpan="3" Height="24" FontFamily="Century Gothic" FontSize="11"/>
-                        <Button Content="Αdd" HorizontalAlignment="Left" Margin="102,6,0,0" VerticalAlignment="Top" Width="65" Height="26" Background="ForestGreen" Click="Button_Click_3" Grid.Column="2" FontFamily="Century Gothic">
+                        <Button Content="Αdd" HorizontalAlignment="Left" Margin="26,7,0,0" VerticalAlignment="Top" Width="71" Height="26" Background="ForestGreen" Click="Button_Click_3" FontFamily="Century Gothic" Grid.ColumnSpan="2">
                             <Button.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -156,9 +155,9 @@
                             </Button.RenderTransform>
                         </Button>
 
-                        <Button x:Name="btnupdateactivity" Content="Update" HorizontalAlignment="Center" Margin="174,8,177,129"  Width="88" Height="Auto" Background="DarkGoldenrod" Click="Button_Click_4" Grid.Column="2" FontFamily="Century Gothic" />
-                        <Button x:Name="btndelete" Content="Delete" HorizontalAlignment="Left" Margin="269,8,0,0" VerticalAlignment="Top" Background="DarkRed" Width="77" Height="28" Grid.Column="2" Click="Btndelete_Click" FontFamily="Century Gothic"/>
-                        <DataGrid x:Name="dgvActivity" CanUserAddRows="False" SelectionUnit="FullRow" HorizontalAlignment="Left" Height="554" Margin="10,41,0,0" VerticalAlignment="Top" Width="605" Grid.ColumnSpan="6" Grid.RowSpan="4" AutoGenerateColumns="False" FontFamily="Century Gothic">
+                        <Button x:Name="btnupdateactivity" Content="Update" HorizontalAlignment="Center" Margin="10,9,334,128"  Width="95" Height="Auto" Background="DarkGoldenrod" Click="Button_Click_4" Grid.Column="2" FontFamily="Century Gothic" />
+                        <Button x:Name="btndelete" Content="Delete" HorizontalAlignment="Left" Margin="122,10,0,0" VerticalAlignment="Top" Background="DarkRed" Width="77" Height="24" Grid.Column="2" Click="Btndelete_Click" FontFamily="Century Gothic"/>
+                        <DataGrid x:Name="dgvActivity"  IsHitTestVisible="True" CanUserAddRows="False" HorizontalAlignment="Left" Height="554" Margin="10,41,0,0" VerticalAlignment="Top" Width="605" Grid.ColumnSpan="6" Grid.RowSpan="4" AutoGenerateColumns="False" FontFamily="Century Gothic">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding Activity_ID}"/>
                                 <DataGridTextColumn Header="Desc" Binding="{Binding Desc}" Width="150" >
@@ -186,7 +185,19 @@
                             </DataGrid.RowStyle>
 
                         </DataGrid>
-                        <Button Content="Completed" Background="#FF0288D1" Grid.Column="2" HorizontalAlignment="Left" Margin="351,10,0,0" VerticalAlignment="Top" Width="113" Height="26" Grid.ColumnSpan="3" Click="Button_Click_5" FontFamily="Century Gothic"/>
+                        <Button Content="Completed" Background="#FF0288D1" Grid.Column="2" HorizontalAlignment="Left" Margin="316,10,0,0" VerticalAlignment="Top" Width="113" Height="24" Click="Button_Click_5" FontFamily="Century Gothic"/>
+                        <Button x:Name="btneditactivities" Background="DeepSkyBlue" Content="Edit" Grid.Column="2" HorizontalAlignment="Left" Margin="218,10,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Btneditactivities_Click" >
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedItems.Count,ElementName=dgvActivity}"
+                                            Value="0" >
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="titem2" Header="TabItem" Height="22" VerticalAlignment="Top" Visibility="Visible">
@@ -196,22 +207,32 @@
                             <ColumnDefinition Width="17*"/>
                             <ColumnDefinition Width="522*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Content="Προσθήκη νέας IP δικτύου" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontFamily="Century Gothic"/>
-                        <Button x:Name="addip" Content="Αdd" Grid.Column="2" HorizontalAlignment="Left" Margin="175,8,0,0" VerticalAlignment="Top" Width="61" Height="28" Background="ForestGreen" Click="Addip_Click" FontFamily="Century Gothic"/>
-                        <Button Background="DarkGoldenrod" x:Name="btnupdateipconf" Content="Update" Grid.Column="2" HorizontalAlignment="Left" Margin="251,8,0,0" VerticalAlignment="Top" Width="89" Height="28" Click="Btnupdateipconf_Click" FontFamily="Century Gothic"/>
-                        <Button x:Name="btndeleteipconf" Content="Delete" Height="Auto" Click="btndeleteipconfig" Background="DarkRed" Grid.Column="2" Margin="356,8,150,570" FontFamily="Century Gothic"/>
+                        <Button x:Name="addip" Content="Αdd" Grid.Column="2" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="72" Height="28" Background="ForestGreen" Click="Addip_Click" FontFamily="Century Gothic"/>
+                        <Button Background="DarkGoldenrod" x:Name="btnupdateipconf" Content="Update" Grid.Column="2" HorizontalAlignment="Left" Margin="114,10,0,0" VerticalAlignment="Top" Width="98" Height="28" Click="Btnupdateipconf_Click" FontFamily="Century Gothic"/>
+                        <Button x:Name="btndeleteipconf" Content="Delete" Height="Auto" Click="btndeleteipconfig" Background="DarkRed" Grid.Column="2" Margin="240,10,259,568" FontFamily="Century Gothic"/>
 
-                        <DataGrid x:Name="dgvipconfig" IsHitTestVisible="True" CanUserAddRows="False" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="555" Margin="0,41,0,0" VerticalAlignment="Top" Width="604" Grid.ColumnSpan="2" Grid.Column="1" FontFamily="Century Gothic" MouseDoubleClick="Dgvipconfig_MouseDoubleClick" MouseDown="Dgvipconfig_MouseDown" CellEditEnding="Dgvipconfig_CellEditEnding" MouseLeave="Dgvipconfig_MouseLeave">
+                        <DataGrid x:Name="dgvipconfig" IsHitTestVisible="True" CanUserAddRows="False" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="555" Margin="0,41,0,0" VerticalAlignment="Top" Width="604" Grid.ColumnSpan="2" Grid.Column="1" FontFamily="Century Gothic" MouseDoubleClick="Dgvipconfig_MouseDoubleClick" MouseDown="Dgvipconfig_MouseDown" CellEditEnding="Dgvipconfig_CellEditEnding" MouseLeave="Dgvipconfig_MouseLeave" DataContextChanged="Dgvipconfig_DataContextChanged" CurrentCellChanged="Dgvipconfig_CurrentCellChanged_1" RowEditEnding="Dgvipconfig_RowEditEnding">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="IpID" Binding="{Binding Ip_ID}"/>
-                                <DataGridTextColumn Header="IPIN" Binding="{Binding IP_IN}"/>
-                                <DataGridTextColumn Header="IPOUT" Binding="{Binding IP_OUT}"/>
-                                <DataGridTextColumn Header="PcName" Binding="{Binding Pc_Name}"/>
-                                <DataGridTextColumn Header="Office" Binding="{Binding Office}"/>
-                                <DataGridTextColumn Header="FullName" Binding="{Binding Full_Name}"/>
+                                <DataGridTextColumn Header="IPIN" Binding="{Binding IP_IN, UpdateSourceTrigger=Explicit, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="IPOUT" Binding="{Binding IP_OUT, UpdateSourceTrigger=Explicit, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="PcName" Binding="{Binding Pc_Name, UpdateSourceTrigger=Explicit, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="Office" Binding="{Binding Office, UpdateSourceTrigger=Explicit, Mode=TwoWay}"/>
+                                <DataGridTextColumn Header="FullName" Binding="{Binding Full_Name, UpdateSourceTrigger=Explicit, Mode=TwoWay}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                        <Button Content="Button" Grid.Column="2" HorizontalAlignment="Left" Margin="454,10,0,0" VerticalAlignment="Top" Width="75" Height="26" Click="Button_Click_7"/>
+                        <Button Content="Edit" Grid.Column="2" Background="DeepSkyBlue" HorizontalAlignment="Left" Margin="354,10,0,0" VerticalAlignment="Top" Width="69" Height="26" Click="Button_Click_7">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedItems.Count,ElementName=dgvipconfig}"
+                                            Value="0" >
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="titem3" Header="TabItem3" Height="22" VerticalAlignment="Top" Visibility="Visible">
@@ -220,8 +241,10 @@
                             <RowDefinition Height="139*"/>
                             <RowDefinition Height="63*"/>
                         </Grid.RowDefinitions>
-                        <Button Content="Export IP's to PDF" HorizontalAlignment="Left" Margin="67,52,0,0" VerticalAlignment="Top" Width="153" Click="Button_Click_6"/>
-                        <Button Content="Export Activities to PDF" HorizontalAlignment="Left" Margin="256,52,0,0" VerticalAlignment="Top" x:Name="btnexportact" Width="191" Click="Btnexportact_Click"/>
+                        <Button Content="Export IP's to PDF" HorizontalAlignment="Left" Background="MediumAquamarine" Margin="52,31,0,0" VerticalAlignment="Top" Width="153" Click="Button_Click_6"/>
+                        <Button Content="Export Activities to PDF" Background="Indigo" HorizontalAlignment="Left" Margin="330,31,0,0" VerticalAlignment="Top" x:Name="btnexportact" Width="191" Click="Btnexportact_Click"/>
+                        <Button Content="Export IP's to Excel" x:Name="btnipexportexcel" HorizontalAlignment="Left" Background="MediumAquamarine" Margin="52,107,0,0" VerticalAlignment="Top" Width="153" Click="exporttoexcel"/>
+                        <Button Content="Export Activities to Excel" x:Name="btnactivitiesexportexcel" Background="Indigo" HorizontalAlignment="Left" Margin="330,107,0,0" VerticalAlignment="Top" Width="191" Click="Btnexportexcelactivities_Click"/>
 
                     </Grid>
                 </TabItem>

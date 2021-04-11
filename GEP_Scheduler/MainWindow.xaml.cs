@@ -1,4 +1,5 @@
-﻿using iTextSharp.text;
+﻿using ClosedXML.Excel;
+using iTextSharp.text;
 using iTextSharp.text.pdf;
 using Microsoft.Win32;
 using Syncfusion.UI.Xaml.Grid.Converter;
@@ -117,6 +118,46 @@ namespace GEP_Scheduler
 
         private void Btnupdateipconf_Click(object sender, RoutedEventArgs e)
         {
+            var items = dgvipconfig.SelectedItems;
+            if (items != null)
+            {
+                foreach (DataRowView item in items)
+                {
+                    try
+                    {
+                        using (SqlConnection con = new SqlConnection())
+                        {
+                            int ipid = Int32.Parse(item.Row.ItemArray[0].ToString());
+                            string ipin = item.Row.ItemArray[1].ToString();
+                            string ipout = item.Row.ItemArray[2].ToString();
+                            string pcname = item.Row.ItemArray[3].ToString();
+                            string office = item.Row.ItemArray[4].ToString();
+                            string fullname = item.Row.ItemArray[5].ToString();
+                            dgvipconfig.UpdateLayout();
+                            con.ConnectionString = @"Data Source=.;Initial Catalog=Gep_Scheduler;Integrated Security=True";
+                            con.Open();
+                            String deleteQuery = "UPDATE dbo.Ip_config SET [IP_IN]=@ipin,[IP_OUT]=@ipout,[Pc_Name]=@pcname," +
+                                "[Office]=@office,[Full_Name]=@fullname WHERE [Ip_ID]=@id";
+                            SqlCommand cmdDeleteActivity = new SqlCommand(deleteQuery, con);
+                            cmdDeleteActivity.Prepare();
+                            cmdDeleteActivity.Parameters.AddWithValue("@ipin", ipin);
+                            cmdDeleteActivity.Parameters.AddWithValue("@ipout", ipout);
+                            cmdDeleteActivity.Parameters.AddWithValue("@pcname", pcname);
+                            cmdDeleteActivity.Parameters.AddWithValue("@office", office);
+                            cmdDeleteActivity.Parameters.AddWithValue("@fullname", fullname);
+                            cmdDeleteActivity.Parameters.AddWithValue("@id", 21);
+
+                            cmdDeleteActivity.ExecuteNonQuery();
+                            con.Close();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+            }
+            
             using (SqlConnection con = new SqlConnection())
             {
                 con.ConnectionString = @"Data Source=.;Initial Catalog=Gep_Scheduler;Integrated Security=True";
@@ -273,8 +314,11 @@ namespace GEP_Scheduler
         {
             DataTable dt = fillDataTable("Ip_config");
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Pdf Files (*.pdf)|*.pdf";
+            saveFileDialog.DefaultExt = "pdf";
+            saveFileDialog.AddExtension = true;
             if (saveFileDialog.ShowDialog() == true)
-                ExportToPdf(dt,saveFileDialog.FileName +".pdf");
+                ExportToPdf(dt,saveFileDialog.FileName);
         }
 
         private void Dgvipconfig_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -289,36 +333,38 @@ namespace GEP_Scheduler
 
         private void Dgvipconfig_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            
         }
 
-        private void Dgvipconfig_MouseLeave(object sender, MouseEventArgs e)
-        {
+        private void Dgvipconfig_MouseLeave(object sender, MouseEventArgs e) {}
+
+        private void Button_Click_7(object sender, RoutedEventArgs e){
             var items = dgvipconfig.SelectedItems;
-            foreach (DataRowView item in items)
+            if (items != null)
             {
+                DataRowView rowview = dgvipconfig.SelectedItem as DataRowView;
+                int id = Int32.Parse(rowview.Row[0].ToString());
+                string ipin1 = rowview.Row[1].ToString();
+                string ipout1 = rowview.Row[2].ToString();
+                string pcname = rowview.Row[3].ToString();
+                string office = rowview.Row[4].ToString();
+                string fullname = rowview.Row[5].ToString();
+            
                 try
                 {
                     using (SqlConnection con = new SqlConnection())
                     {
-                        int ipid = Int32.Parse(item.Row.ItemArray[0].ToString());
-                        string ipin = item.Row.ItemArray[1].ToString();
-                        string ipout = item.Row.ItemArray[2].ToString();
-                        string pcname = item.Row.ItemArray[3].ToString();
-                        string office = item.Row.ItemArray[4].ToString();
-                        string fullname = item.Row.ItemArray[5].ToString();
                         con.ConnectionString = @"Data Source=.;Initial Catalog=Gep_Scheduler;Integrated Security=True";
                         con.Open();
                         String deleteQuery = "UPDATE dbo.Ip_config SET [IP_IN]=@ipin,[IP_OUT]=@ipout,[Pc_Name]=@pcname," +
                             "[Office]=@office,[Full_Name]=@fullname WHERE [Ip_ID]=@id";
                         SqlCommand cmdDeleteActivity = new SqlCommand(deleteQuery, con);
                         cmdDeleteActivity.Prepare();
-                        cmdDeleteActivity.Parameters.AddWithValue("@ipin", ipin);
-                        cmdDeleteActivity.Parameters.AddWithValue("@ipout", ipout);
+                        cmdDeleteActivity.Parameters.AddWithValue("@ipin", ipin1);
+                        cmdDeleteActivity.Parameters.AddWithValue("@ipout", ipout1);
                         cmdDeleteActivity.Parameters.AddWithValue("@pcname", pcname);
                         cmdDeleteActivity.Parameters.AddWithValue("@office", office);
                         cmdDeleteActivity.Parameters.AddWithValue("@fullname", fullname);
-                        cmdDeleteActivity.Parameters.AddWithValue("@id", 21);
+                        cmdDeleteActivity.Parameters.AddWithValue("@id", id);
 
                         cmdDeleteActivity.ExecuteNonQuery();
                         con.Close();
@@ -330,58 +376,102 @@ namespace GEP_Scheduler
                 }
             }
             btnupdateipconf.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-            //Console.WriteLine(ipid);
-        }
-
-        private void Button_Click_7(object sender, RoutedEventArgs e)
-        {
-            var items = dgvipconfig.SelectedItems;
-            if (items != null)
-            {
-                foreach (DataRowView item in items)
-                {
-                    try
-                    {
-                        using (SqlConnection con = new SqlConnection())
-                        {
-                            int ipid = Int32.Parse(item.Row.ItemArray[0].ToString());
-                            string ipin = item.Row.ItemArray[1].ToString();
-                            string ipout = item.Row.ItemArray[2].ToString();
-                            string pcname = item.Row.ItemArray[3].ToString();
-                            string office = item.Row.ItemArray[4].ToString();
-                            string fullname = item.Row.ItemArray[5].ToString();
-                            con.ConnectionString = @"Data Source=.;Initial Catalog=Gep_Scheduler;Integrated Security=True";
-                            con.Open();
-                            String deleteQuery = "UPDATE dbo.Ip_config SET [IP_IN]=@ipin,[IP_OUT]=@ipout,[Pc_Name]=@pcname," +
-                                "[Office]=@office,[Full_Name]=@fullname WHERE [Ip_ID]=@id";
-                            SqlCommand cmdDeleteActivity = new SqlCommand(deleteQuery, con);
-                            cmdDeleteActivity.Prepare();
-                            cmdDeleteActivity.Parameters.AddWithValue("@ipin", ipin);
-                            cmdDeleteActivity.Parameters.AddWithValue("@ipout", ipout);
-                            cmdDeleteActivity.Parameters.AddWithValue("@pcname", pcname);
-                            cmdDeleteActivity.Parameters.AddWithValue("@office", office);
-                            cmdDeleteActivity.Parameters.AddWithValue("@fullname", fullname);
-                            cmdDeleteActivity.Parameters.AddWithValue("@id", 21);
-
-                            cmdDeleteActivity.ExecuteNonQuery();
-                            con.Close();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message);
-                    }
-                }
-            }
-            btnupdateipconf.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
         }
 
         private void Btnexportact_Click(object sender, RoutedEventArgs e)
         {
             DataTable dt = fillDataTable("Activity");
             SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Pdf Files (*.pdf)|*.pdf";
+            saveFileDialog.DefaultExt = "pdf";
+            saveFileDialog.AddExtension = true;
             if (saveFileDialog.ShowDialog() == true)
-                ExportToPdf(dt, saveFileDialog.FileName + ".pdf");
+                ExportToPdf(dt, saveFileDialog.FileName );
+        }
+
+        private void Dgvipconfig_CurrentCellChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void Dgvipconfig_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+        }
+
+        private void Dgvipconfig_CurrentCellChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Dgvipconfig_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+
+        }
+
+        private void Btneditactivities_Click(object sender, RoutedEventArgs e)
+        {
+            var items = dgvActivity.SelectedItems;
+            if (items != null)
+            {
+                DataRowView rowview = dgvActivity.SelectedItem as DataRowView;
+                int id = Int32.Parse(rowview.Row[0].ToString());
+                string desc = rowview.Row[1].ToString();
+                string date = rowview.Row[2].ToString();
+                string priority = rowview.Row[3].ToString();
+                string status = rowview.Row[4].ToString();
+
+                try
+                {
+                    using (SqlConnection con = new SqlConnection())
+                    {
+                        con.ConnectionString = @"Data Source=.;Initial Catalog=Gep_Scheduler;Integrated Security=True";
+                        con.Open();
+                        String deleteQuery = "UPDATE dbo.Activity SET [Desc]=@desc,[Date]=@date,[Priority]=@priority," +
+                            "[Status]=@status WHERE [Activity_ID]=@aid";
+                        SqlCommand cmdDeleteActivity = new SqlCommand(deleteQuery, con);
+                        cmdDeleteActivity.Prepare();
+                        cmdDeleteActivity.Parameters.AddWithValue("@desc", desc);
+                        cmdDeleteActivity.Parameters.AddWithValue("@date", date);
+                        cmdDeleteActivity.Parameters.AddWithValue("@priority", priority);
+                        cmdDeleteActivity.Parameters.AddWithValue("@status", status);
+                        cmdDeleteActivity.Parameters.AddWithValue("@aid", id);
+                        cmdDeleteActivity.ExecuteNonQuery();
+                        con.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            btnupdateipconf.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+        }
+
+        private void exporttoexcel(object sender, RoutedEventArgs e)
+        {
+            XLWorkbook wb = new XLWorkbook();
+            DataTable dt = fillDataTable("Ip_Config");
+            wb.Worksheets.Add(dt, "Ip_config Worksheet");
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Xlsx Files (*.xlsx)|*.xlsx";
+            saveFileDialog.DefaultExt = "xlsx";
+            saveFileDialog.AddExtension = true;
+            if (saveFileDialog.ShowDialog() == true)
+                wb.SaveAs(saveFileDialog.FileName);
+        }
+
+        private void Btnexportexcelactivities_Click(object sender, RoutedEventArgs e)
+        {
+            XLWorkbook wb = new XLWorkbook();
+            DataTable dt = fillDataTable("Activity");
+            wb.Worksheets.Add(dt, "Activity Worksheet");
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Xlsx Files (*.xlsx)|*.xlsx";
+            saveFileDialog.DefaultExt = "xlsx";
+            saveFileDialog.AddExtension = true;
+            if (saveFileDialog.ShowDialog() == true)
+                wb.SaveAs(saveFileDialog.FileName);
         }
     }
 }
