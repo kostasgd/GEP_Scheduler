@@ -473,6 +473,104 @@ namespace GEP_Scheduler
             if (saveFileDialog.ShowDialog() == true)
                 wb.SaveAs(saveFileDialog.FileName);
         }
+        private string getradiobuttonselected()
+        {
+            string s = "";
+            if (rbactivity.IsChecked==true)
+            {
+                s = "dbo.Activity";
+            }
+            else if (rbipconfig.IsChecked == true)
+            {
+                s = "dbo.Ip_config";
+            }
+            else
+            {
+                return null;
+            }
+            return s;
+        }
+
+        private void Txtsearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(txtsearch.Text.Length >0 )
+            {
+                try
+                {
+                    using (SqlConnection con = new SqlConnection())
+                    {
+                        con.ConnectionString = @"Data Source=localhost;Initial Catalog=Gep_Scheduler;Integrated Security=True";
+                        con.Open();
+                        SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM dbo.Activity WHERE [Activity_ID] LIKE '%" + Int32.Parse( txtsearch.Text.ToString().Trim())+"%' OR [Desc] LIKE '%" + txtsearch.Text.ToString().Trim() + "%' OR [Status] LIKE '%" + txtsearch.Text.ToString().Trim()
+                            + "%' OR [Priority] LIKE '%" + txtsearch.Text.ToString().Trim() + "%'", con);
+                        DataTable dt = new DataTable("Activity");
+                        da.Fill(dt);
+                        dgvsearch.ItemsSource = dt.DefaultView;
+                        con.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            else if (txtsearch.Text.Length == 0)
+            {
+                using (SqlConnection con = new SqlConnection())
+                {
+                    con.ConnectionString = @"Data Source=localhost;Initial Catalog=Gep_Scheduler;Integrated Security=True";
+                    con.Open();
+                    SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM dbo.Activity", con);
+                    DataTable dt = new DataTable("Fill Activities");
+                    da.Fill(dt);
+                    dgvsearch.ItemsSource = dt.DefaultView;
+                    con.Close();
+                }
+            }
+        }
+
+        private void Txtsearchact_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txtsearchact.Text.Length > 0)
+            {
+                try
+                {
+                    using (SqlConnection con = new SqlConnection())
+                    {
+                        con.ConnectionString = @"Data Source=localhost;Initial Catalog=Gep_Scheduler;Integrated Security=True";
+                        con.Open();
+                        SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM dbo.Activity WHERE [Activity_ID] LIKE '%" + Int32.Parse(txtsearch.Text.ToString().Trim()) + "%' OR [Desc] LIKE '%" + txtsearch.Text.ToString().Trim() + "%' OR [Status] LIKE '%" + txtsearch.Text.ToString().Trim()
+                            + "%' OR [Priority] LIKE '%" + txtsearch.Text.ToString().Trim() + "%'", con);
+                        DataTable dt = new DataTable("Activity");
+                        da.Fill(dt);
+                        dgvsearch.ItemsSource = dt.DefaultView;
+                        con.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    
+                }
+            }
+            else
+            {
+                using (SqlConnection con = new SqlConnection())
+                {
+                    con.ConnectionString = @"Data Source=localhost;Initial Catalog=Gep_Scheduler;Integrated Security=True";
+                    con.Open();
+                    SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM dbo.Activity", con);
+                    DataTable dt = new DataTable("Activity");
+                    da.Fill(dt);
+                    dgvActivity.ItemsSource = dt.DefaultView;
+                    con.Close();
+                }
+            }
+        }
+
+        private void Item4_Selected(object sender, RoutedEventArgs e)
+        {
+            titem4.IsSelected = true;
+        }
     }
 }
 

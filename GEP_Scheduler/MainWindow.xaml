@@ -90,6 +90,7 @@
                 <ListViewItem x:Name="item0" Content="Activities" Height="40" Selected="Item0_Selected" FontFamily="Century Gothic"/>
                 <ListViewItem x:Name="item1" Content="Ip Configuration" Height="40" Selected="Item1_Selected" FontFamily="Century Gothic"/>
                 <ListViewItem x:Name="item2" Selected="Item3_Selected" Content="Reports" Height="40" FontFamily="Century Gothic"/>
+                <ListViewItem x:Name="item3" Selected="Item4_Selected" Content="Calendar" Height="40" FontFamily="Century Gothic"/>
             </ListView>
 
             <Grid Width="0" Margin="0,0,0,-11" HorizontalAlignment="Left" Grid.Column="2" RenderTransformOrigin="0.5,0.5">
@@ -157,7 +158,7 @@
 
                         <Button x:Name="btnupdateactivity" Content="Update" HorizontalAlignment="Center" Margin="10,9,334,128"  Width="95" Height="Auto" Background="DarkGoldenrod" Click="Button_Click_4" Grid.Column="2" FontFamily="Century Gothic" />
                         <Button x:Name="btndelete" Content="Delete" HorizontalAlignment="Left" Margin="122,10,0,0" VerticalAlignment="Top" Background="DarkRed" Width="77" Height="24" Grid.Column="2" Click="Btndelete_Click" FontFamily="Century Gothic"/>
-                        <DataGrid x:Name="dgvActivity"  IsHitTestVisible="True" CanUserAddRows="False" HorizontalAlignment="Left" Height="554" Margin="10,41,0,0" VerticalAlignment="Top" Width="605" Grid.ColumnSpan="6" Grid.RowSpan="4" AutoGenerateColumns="False" FontFamily="Century Gothic">
+                        <DataGrid x:Name="dgvActivity"  IsHitTestVisible="True" CanUserAddRows="False" HorizontalAlignment="Left" Height="512" Margin="10,83,0,0" VerticalAlignment="Top" Width="605" Grid.ColumnSpan="6" Grid.RowSpan="4" AutoGenerateColumns="False" FontFamily="Century Gothic">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding Activity_ID}"/>
                                 <DataGridTextColumn Header="Desc" Binding="{Binding Desc}" Width="150" >
@@ -198,6 +199,7 @@
                                 </Style>
                             </Button.Style>
                         </Button>
+                        <TextBox x:Name="txtsearchact" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="23" Margin="50,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="451" TextChanged="Txtsearchact_TextChanged"/>
                     </Grid>
                 </TabItem>
                 <TabItem x:Name="titem2" Header="TabItem" Height="22" VerticalAlignment="Top" Visibility="Visible">
@@ -245,7 +247,22 @@
                         <Button Content="Export Activities to PDF" Background="Indigo" HorizontalAlignment="Left" Margin="330,31,0,0" VerticalAlignment="Top" x:Name="btnexportact" Width="191" Click="Btnexportact_Click"/>
                         <Button Content="Export IP's to Excel" x:Name="btnipexportexcel" HorizontalAlignment="Left" Background="MediumAquamarine" Margin="52,107,0,0" VerticalAlignment="Top" Width="153" Click="exporttoexcel"/>
                         <Button Content="Export Activities to Excel" x:Name="btnactivitiesexportexcel" Background="Indigo" HorizontalAlignment="Left" Margin="330,107,0,0" VerticalAlignment="Top" Width="191" Click="Btnexportexcelactivities_Click"/>
+                        <Button x:Name="bt" Content="Search" HorizontalAlignment="Left" Margin="440,180,0,0" VerticalAlignment="Top" Width="81" Height="35"/>
+                        <TextBox x:Name="txtsearch" HorizontalAlignment="Left" Height="35" Margin="52,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="352" TextChanged="Txtsearch_TextChanged"/>
+                        <DataGrid x:Name="dgvsearch" HorizontalAlignment="Left" Height="329" Margin="33,267,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="523"/>
+                        <RadioButton IsEnabled="True" x:Name="rbipconfig" Background="Wheat" Content="Ip Config" HorizontalAlignment="Left" Margin="86,232,0,0" VerticalAlignment="Top" Foreground="{DynamicResource PrimaryHueLightBrush}"/>
+                        <RadioButton x:Name="rbactivity" Background="Wheat" Content="Activity" HorizontalAlignment="Left" Margin="192,235,0,0" VerticalAlignment="Top" Foreground="{DynamicResource PrimaryHueLightBrush}"/>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="titem4" Header="TabItem4" Height="22" VerticalAlignment="Top" Visibility="Visible">
+                    <Grid Background="#ff292929">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*"/>
+                        </Grid.RowDefinitions>
+                        <Viewbox>
+                            <Calendar/>
 
+                        </Viewbox>
                     </Grid>
                 </TabItem>
             </TabControl>
