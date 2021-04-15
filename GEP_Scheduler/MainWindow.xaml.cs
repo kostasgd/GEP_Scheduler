@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,7 +33,8 @@ namespace GEP_Scheduler
         {
             InitializeComponent();
             btnupdateactivity.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-            btnupdateipconf.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));  
+            btnupdateipconf.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            hightlightdates();
         }
         public DataTable fillDataTable(string table)
         {
@@ -44,6 +46,7 @@ namespace GEP_Scheduler
                 sqlConn.Open();
                 DataTable dt = new DataTable();
                 dt.Load(cmd.ExecuteReader());
+                sqlConn.Close();
                 return dt;
             }
         }
@@ -64,11 +67,13 @@ namespace GEP_Scheduler
         private void Item0_Selected(object sender, RoutedEventArgs e)
         {
             titem1.IsSelected = true;
+            hightlightdates();
         }
 
         private void Item1_Selected(object sender, RoutedEventArgs e)
         {
             titem2.IsSelected = true;
+            hightlightdates();
         }
 
 
@@ -91,6 +96,7 @@ namespace GEP_Scheduler
             WPF_Add_Activity waa = new WPF_Add_Activity(mw);
             waa.ShowDialog();
             btnupdateactivity.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            hightlightdates();
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
@@ -268,6 +274,7 @@ namespace GEP_Scheduler
         private void Item3_Selected(object sender, RoutedEventArgs e)
         {
             titem3.IsSelected = true;
+            hightlightdates();
         }
 
         public void ExportToPdf(DataTable dt, string strFilePath)
@@ -567,9 +574,36 @@ namespace GEP_Scheduler
             }
         }
 
+        public void hightlightdates()
+        {
+            string query = "SELECT [Date] FROM dbo.Activity";
+            SqlConnection sqlConn = new SqlConnection(@"Data Source = localhost; Initial Catalog = Gep_Scheduler; Integrated Security = True");
+            using (SqlCommand cmd = new SqlCommand(query, sqlConn))
+            {
+                sqlConn.Open();
+                DataTable dt = new DataTable();
+                dt.Load(cmd.ExecuteReader());
+                foreach(DataRow dataTable in dt.Rows)
+                {
+                    string s = dataTable.ItemArray[0].ToString();
+                    Regex regex = new Regex(@"[0-9]{1,}\/[0-9]{1,}\/[0-9]{1,}");
+                    Match match = regex.Match(s);
+                    if (match.Success)
+                    {
+                        DateTime oDate = Convert.ToDateTime(match.Value);
+                        
+                        calendaract.SelectedDates.Add(oDate);
+                    }
+                }
+                calendaract.UpdateLayout();
+                sqlConn.Close();
+            }
+        }
+
         private void Item4_Selected(object sender, RoutedEventArgs e)
         {
             titem4.IsSelected = true;
+            hightlightdates();
         }
     }
 }
