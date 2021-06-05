@@ -48,11 +48,8 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        
-        <CollectionViewSource x:Key="activityViewSource" Source="{Binding Activity, Source={}}"/>
-        <CollectionViewSource x:Key="ip_configViewSource" Source="{Binding Ip_config, Source={}}"/>
-        <local:Gep_SchedulerDataSet x:Key="gep_SchedulerDataSet"/>
-        <CollectionViewSource x:Key="ip_configViewSource1" Source="{Binding Ip_config, Source={StaticResource gep_SchedulerDataSet}}"/>
+
+
     </Window.Resources>
 
     <Window.Triggers>
@@ -133,7 +130,7 @@
                     </Ellipse.RenderTransform>
                 </Ellipse>
             </Grid>
-            <TabControl Grid.Column="2" HorizontalAlignment="Left" Height="634" Margin="3,2,-43,-8" VerticalAlignment="Top" Width="566" RenderTransformOrigin="0.5,0.5" BorderBrush="Transparent" BorderThickness="0" SelectionChanged="TabControl_SelectionChanged">
+            <TabControl x:Name="tabcontrol" Visibility="Visible" Grid.Column="2" HorizontalAlignment="Left" Height="634" Margin="3,2,-43,-8" VerticalAlignment="Top" Width="566" RenderTransformOrigin="0.5,0.5" BorderBrush="Transparent" BorderThickness="0" SelectionChanged="TabControl_SelectionChanged">
                 <TabControl.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -142,12 +139,13 @@
                         <TranslateTransform/>
                     </TransformGroup>
                 </TabControl.RenderTransform>
-                <TabItem x:Name="titem1" Header="TabItem" Visibility="Visible">
-                    <Grid Background="#ff292929" DataContext="{StaticResource activityViewSource}" Margin="-9,1,-54,1" >
+                <TabItem x:Name="titem1" Header="Activities" Visibility="Visible" FontFamily="Century Gothic" BorderBrush="#FF959393" Background="{DynamicResource PrimaryHueLightForegroundBrush}" Foreground="#FFF1E5E5">
+                    <Grid Background="#ff292929"  Margin="-9,1,-54,1" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="81*"/>
                             <ColumnDefinition Width="20*"/>
-                            <ColumnDefinition Width="439*"/>
+                            <ColumnDefinition Width="384*"/>
+                            <ColumnDefinition Width="55*"/>
                             <ColumnDefinition Width="8*"/>
                             <ColumnDefinition Width="37*"/>
                             <ColumnDefinition Width="40*"/>
@@ -169,9 +167,9 @@
                             </Button.RenderTransform>
                         </Button>
 
-                        <Button x:Name="btnupdateactivity" Content="Update" HorizontalAlignment="Center" Margin="10,9,334,128"  Width="95" Height="Auto" Background="DarkGoldenrod" Click="Button_Click_4" Grid.Column="2" FontFamily="Century Gothic" />
+                        <Button x:Name="btnupdateactivity" Content="Update" HorizontalAlignment="Center" Margin="10,9,278.922,128"  Width="95" Height="Auto" Background="DarkGoldenrod" Click="Button_Click_4" Grid.Column="2" FontFamily="Century Gothic" />
                         <Button x:Name="btndelete" Content="Delete" HorizontalAlignment="Left" Margin="122,10,0,0" VerticalAlignment="Top" Background="DarkRed" Width="77" Height="24" Grid.Column="2" Click="Btndelete_Click" FontFamily="Century Gothic"/>
-                        <DataGrid x:Name="dgvActivity"  IsHitTestVisible="True" CanUserAddRows="False" HorizontalAlignment="Left" Height="512" Margin="10,83,0,0" VerticalAlignment="Top" Width="605" Grid.ColumnSpan="6" Grid.RowSpan="4" AutoGenerateColumns="False" FontFamily="Century Gothic">
+                        <DataGrid x:Name="dgvActivity"  IsHitTestVisible="True" CanUserAddRows="False" HorizontalAlignment="Left" Height="532" Margin="10,63,0,0" VerticalAlignment="Top" Width="605" Grid.ColumnSpan="7" Grid.RowSpan="4" AutoGenerateColumns="False" FontFamily="Century Gothic">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding Activity_ID}"/>
                                 <DataGridTextColumn Header="Desc" Binding="{Binding Desc}" Width="150" >
@@ -199,7 +197,7 @@
                             </DataGrid.RowStyle>
 
                         </DataGrid>
-                        <Button Content="Completed" Background="#FF0288D1" Grid.Column="2" HorizontalAlignment="Left" Margin="316,10,0,0" VerticalAlignment="Top" Width="113" Height="24" Click="Button_Click_5" FontFamily="Century Gothic"/>
+                        <Button Content="Completed" Background="#FF0288D1" Grid.Column="2" HorizontalAlignment="Left" Margin="316,10,0,0" VerticalAlignment="Top" Width="113" Height="24" Click="Button_Click_5" FontFamily="Century Gothic" Grid.ColumnSpan="2"/>
                         <Button x:Name="btneditactivities" Background="DeepSkyBlue" Content="Edit" Grid.Column="2" HorizontalAlignment="Left" Margin="218,10,0,0" VerticalAlignment="Top" Width="75" Height="23" Click="Btneditactivities_Click" >
                             <Button.Style>
                                 <Style TargetType="Button">
@@ -212,10 +210,9 @@
                                 </Style>
                             </Button.Style>
                         </Button>
-                        <TextBox x:Name="txtsearchact" Grid.ColumnSpan="3" HorizontalAlignment="Left" Height="23" Margin="50,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="451" TextChanged="Txtsearchact_TextChanged"/>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="titem2" Header="TabItem" Height="22" VerticalAlignment="Top" Visibility="Visible">
+                <TabItem x:Name="titem2" Header="IP Addresses" Height="22" VerticalAlignment="Top" Visibility="Visible" FontFamily="Century Gothic" Background="{DynamicResource PrimaryHueMidForegroundBrush}" BorderBrush="#FF8F8F8F" Foreground="#FFFDFDFD">
                     <Grid Background="#ff292929" DataContext="{}" Margin="-9,0,-43,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="9*"/>
@@ -226,7 +223,7 @@
                         <Button Background="DarkGoldenrod" x:Name="btnupdateipconf" Content="Update" Grid.Column="2" HorizontalAlignment="Left" Margin="114,10,0,0" VerticalAlignment="Top" Width="98" Height="28" Click="Btnupdateipconf_Click" FontFamily="Century Gothic"/>
                         <Button x:Name="btndeleteipconf" Content="Delete" Height="Auto" Click="btndeleteipconfig" Background="DarkRed" Grid.Column="2" Margin="240,10,259,568" FontFamily="Century Gothic"/>
 
-                        <DataGrid x:Name="dgvipconfig" IsHitTestVisible="True" CanUserAddRows="False" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="555" Margin="0,41,0,0" VerticalAlignment="Top" Width="604" Grid.ColumnSpan="2" Grid.Column="1" FontFamily="Century Gothic" MouseDoubleClick="Dgvipconfig_MouseDoubleClick" MouseDown="Dgvipconfig_MouseDown" CellEditEnding="Dgvipconfig_CellEditEnding" MouseLeave="Dgvipconfig_MouseLeave" DataContextChanged="Dgvipconfig_DataContextChanged" CurrentCellChanged="Dgvipconfig_CurrentCellChanged_1" RowEditEnding="Dgvipconfig_RowEditEnding">
+                        <DataGrid x:Name="dgvipconfig" IsHitTestVisible="True" CanUserAddRows="False" AutoGenerateColumns="False" HorizontalAlignment="Left" Height="505" Margin="0,91,0,0" VerticalAlignment="Top" Width="604" Grid.ColumnSpan="2" Grid.Column="1" FontFamily="Century Gothic" MouseDoubleClick="Dgvipconfig_MouseDoubleClick" MouseDown="Dgvipconfig_MouseDown" CellEditEnding="Dgvipconfig_CellEditEnding" MouseLeave="Dgvipconfig_MouseLeave" DataContextChanged="Dgvipconfig_DataContextChanged" CurrentCellChanged="Dgvipconfig_CurrentCellChanged_1" RowEditEnding="Dgvipconfig_RowEditEnding">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="IpID" Binding="{Binding Ip_ID}"/>
                                 <DataGridTextColumn Header="IPIN" Binding="{Binding IP_IN, UpdateSourceTrigger=Explicit, Mode=TwoWay}"/>
@@ -248,26 +245,34 @@
                                 </Style>
                             </Button.Style>
                         </Button>
+                        <TextBox x:Name="txtSerchipconfig" Grid.Column="2" HorizontalAlignment="Left" Height="23" Margin="10,60,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="513" Foreground="{DynamicResource PrimaryHueLightBrush}" TextChanged="TxtSerchipconfig_TextChanged"/>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="titem3" Header="TabItem3" Height="22" VerticalAlignment="Top" Visibility="Visible">
+                <TabItem x:Name="titem3" Header="Reports" Height="22" VerticalAlignment="Top" Visibility="Visible" FontFamily="Century" BorderBrush="#FFF5F0F0" Foreground="#FFF7F7F7">
+                    <TabItem.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FF8B1E1E" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TabItem.Background>
                     <Grid Background="#ff292929" Margin="-9,0,-43,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="139*"/>
                             <RowDefinition Height="63*"/>
                         </Grid.RowDefinitions>
-                        <Button Content="Export IP's to PDF" HorizontalAlignment="Left" Background="MediumAquamarine" Margin="52,31,0,0" VerticalAlignment="Top" Width="153" Click="Button_Click_6"/>
-                        <Button Content="Export Activities to PDF" Background="Indigo" HorizontalAlignment="Left" Margin="330,31,0,0" VerticalAlignment="Top" x:Name="btnexportact" Width="191" Click="Btnexportact_Click"/>
-                        <Button Content="Export IP's to Excel" x:Name="btnipexportexcel" HorizontalAlignment="Left" Background="MediumAquamarine" Margin="52,107,0,0" VerticalAlignment="Top" Width="153" Click="exporttoexcel"/>
-                        <Button Content="Export Activities to Excel" x:Name="btnactivitiesexportexcel" Background="Indigo" HorizontalAlignment="Left" Margin="330,107,0,0" VerticalAlignment="Top" Width="191" Click="Btnexportexcelactivities_Click"/>
-                        <Button x:Name="bt" Content="Search" HorizontalAlignment="Left" Margin="440,180,0,0" VerticalAlignment="Top" Width="81" Height="35"/>
-                        <TextBox x:Name="txtsearch" HorizontalAlignment="Left" Height="35" Margin="52,180,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="352" TextChanged="Txtsearch_TextChanged"/>
-                        <DataGrid x:Name="dgvsearch" HorizontalAlignment="Left" Height="329" Margin="33,267,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="523" IsHitTestVisible="False"/>
-                        <RadioButton IsEnabled="True" x:Name="rbipconfig" Background="Wheat" Content="Ip Config" HorizontalAlignment="Left" Margin="86,232,0,0" VerticalAlignment="Top" Foreground="{DynamicResource PrimaryHueLightBrush}"/>
-                        <RadioButton x:Name="rbactivity" Background="Wheat" Content="Activity" HorizontalAlignment="Left" Margin="192,235,0,0" VerticalAlignment="Top" Foreground="{DynamicResource PrimaryHueLightBrush}"/>
+                        <Button Content="Export IP's to PDF" HorizontalAlignment="Left" Background="MediumAquamarine" Margin="62,30,0,0" VerticalAlignment="Top" Width="153" Click="Button_Click_6"/>
+                        <Button Content="Export Activities to PDF" Background="Indigo" HorizontalAlignment="Left" Margin="339,31,0,0" VerticalAlignment="Top" x:Name="btnexportact" Width="191" Click="Btnexportact_Click"/>
+                        <Button Content="Export IP's to Excel" x:Name="btnipexportexcel" HorizontalAlignment="Left" Background="MediumAquamarine" Margin="52,107,0,0" VerticalAlignment="Top" Width="177" Click="exporttoexcel"/>
+                        <Button Content="Export Activities to Excel" x:Name="btnactivitiesexportexcel" Background="Indigo" HorizontalAlignment="Left" Margin="330,107,0,0" VerticalAlignment="Top" Width="211" Click="Btnexportexcelactivities_Click"/>
                     </Grid>
                 </TabItem>
-                <TabItem x:Name="titem4" Header="TabItem4" Height="22" VerticalAlignment="Top" Visibility="Visible">
+                <TabItem x:Name="titem4" Header="Calendar" Height="22" VerticalAlignment="Top" Visibility="Visible" FontFamily="Century" Foreground="#FFF7F7F7">
+                    <TabItem.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FF58F0FF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TabItem.Background>
                     <Grid Background="#ff292929">
                         <Viewbox>
                             <Calendar x:Name="calendaract" Width="303" SelectionMode="MultipleRange" >

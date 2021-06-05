@@ -28,7 +28,7 @@ namespace GEP_Scheduler
 
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            String myConnection = @"Data Source=.;Initial Catalog=Gep_Scheduler;Integrated Security=True";
+            String myConnection = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\DB.mdf;Integrated Security=True;Trusted_Connection=Yes;";
             SqlConnection Connect = null;
             try
             {
