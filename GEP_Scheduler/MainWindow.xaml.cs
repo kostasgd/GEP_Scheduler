@@ -33,10 +33,9 @@ namespace GEP_Scheduler
         public MainWindow()
         {
             InitializeComponent();
-            btnupdateactivity.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-            btnupdateipconf.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
             hightlightdates();
-            
+            fillactivities();
+            fillipconfig();
             titem1.IsSelected = true;
             titem1.Visibility = Visibility.Visible;
         }
@@ -88,25 +87,10 @@ namespace GEP_Scheduler
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            //GEP_Scheduler.Gep_SchedulerDataSet gep_SchedulerDataSet = ((GEP_Scheduler.Gep_SchedulerDataSet)(this.FindResource("DBDataSet")));
-            //// Load data into the table Ip_config. You can modify this code as needed.
-            //GEP_Scheduler.Gep_SchedulerDataSetTableAdapters.Ip_configTableAdapter gep_SchedulerDataSetIp_configTableAdapter = new GEP_Scheduler.Gep_SchedulerDataSetTableAdapters.Ip_configTableAdapter();
-            //gep_SchedulerDataSetIp_configTableAdapter.Fill(gep_SchedulerDataSet.Ip_config);
-            //System.Windows.Data.CollectionViewSource ip_configViewSource1 = ((System.Windows.Data.CollectionViewSource)(this.FindResource("ip_configViewSource1")));
-            //ip_configViewSource1.View.MoveCurrentToFirst();
 
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
-        {
-            MainWindow mw = new MainWindow();
-            WPF_Add_Activity waa = new WPF_Add_Activity(mw);
-            waa.ShowDialog();
-            btnupdateactivity.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-            hightlightdates();
-        }
-
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+        public void fillactivities()
         {
             using (SqlConnection con = new SqlConnection())
             {
@@ -120,6 +104,57 @@ namespace GEP_Scheduler
             }
         }
 
+        public void fillipconfig()
+        {
+            using (SqlConnection con = new SqlConnection())
+            {
+                con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\DB.mdf;Integrated Security=True;Trusted_Connection=Yes;";
+                con.Open();
+                SqlDataAdapter da = new SqlDataAdapter("SELECT [Ip_ID],[IP_IN],[IP_OUT],[Pc_Name],[Office],[Full_Name] FROM dbo.Ip_config", con);
+                DataTable dt = new DataTable("Fill Activities");
+                da.Fill(dt);
+                dgvipconfig.ItemsSource = dt.DefaultView;
+                con.Close();
+            }
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            MainWindow mw = new MainWindow();
+            WPF_Add_Activity waa = new WPF_Add_Activity(mw);
+            waa.ShowDialog();
+            btnupdateactivity.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            hightlightdates();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            object item = dgvActivity.SelectedItem;
+            if (item != null)
+            {
+                string ID = (dgvActivity.SelectedCells[0].Column.GetCellContent(item) as TextBlock).Text;
+                string Desc = (dgvActivity.SelectedCells[1].Column.GetCellContent(item) as TextBlock).Text;
+                string Date = (dgvActivity.SelectedCells[2].Column.GetCellContent(item) as TextBlock).Text;
+
+               // MessageBox.Show(ID);
+                using (SqlConnection con = new SqlConnection())
+                {
+                    con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\DB.mdf;Integrated Security=True;Trusted_Connection=Yes;";
+                    string commandText = "UPDATE dbo.Activity SET [Desc]='" + Desc + "', [Date]='" + Date + "' WHERE [Activity_ID]='" + ID + "'";
+
+                    using (SqlConnection conn = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\DB.mdf;Integrated Security=True;Trusted_Connection=Yes;"))
+                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
+                    {
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
+                    }
+                    con.Close();
+                }
+            }
+            fillactivities();
+        }
+
         private void Addip_Click(object sender, RoutedEventArgs e)
         {
             WPF_Add_IP wai = new WPF_Add_IP();
@@ -131,57 +166,33 @@ namespace GEP_Scheduler
 
         private void Btnupdateipconf_Click(object sender, RoutedEventArgs e)
         {
-            var items = dgvipconfig.SelectedItems;
-            if (items != null)
+            object item = dgvipconfig.SelectedItem;
+            if (item != null)
             {
-                foreach (DataRowView item in items)
-                {
-                    try
-                    {
-                        using (SqlConnection con = new SqlConnection())
-                        {
-                            int ipid = Int32.Parse(item.Row.ItemArray[0].ToString());
-                            string ipin = item.Row.ItemArray[1].ToString();
-                            string ipout = item.Row.ItemArray[2].ToString();
-                            string pcname = item.Row.ItemArray[3].ToString();
-                            string office = item.Row.ItemArray[4].ToString();
-                            string fullname = item.Row.ItemArray[5].ToString();
-                            dgvipconfig.UpdateLayout();
-                            con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\DB.mdf;Integrated Security=True;Trusted_Connection=Yes;";
-                            con.Open();
-                            String deleteQuery = "UPDATE dbo.Ip_config SET [IP_IN]=@ipin,[IP_OUT]=@ipout,[Pc_Name]=@pcname," +
-                                "[Office]=@office,[Full_Name]=@fullname WHERE [Ip_ID]=@id";
-                            SqlCommand cmdDeleteActivity = new SqlCommand(deleteQuery, con);
-                            cmdDeleteActivity.Prepare();
-                            cmdDeleteActivity.Parameters.AddWithValue("@ipin", ipin);
-                            cmdDeleteActivity.Parameters.AddWithValue("@ipout", ipout);
-                            cmdDeleteActivity.Parameters.AddWithValue("@pcname", pcname);
-                            cmdDeleteActivity.Parameters.AddWithValue("@office", office);
-                            cmdDeleteActivity.Parameters.AddWithValue("@fullname", fullname);
-                            cmdDeleteActivity.Parameters.AddWithValue("@id", 21);
+                string ID = (dgvipconfig.SelectedCells[0].Column.GetCellContent(item) as TextBlock).Text;
+                string IP_IN = (dgvipconfig.SelectedCells[1].Column.GetCellContent(item) as TextBlock).Text;
+                string IP_OUT = (dgvipconfig.SelectedCells[2].Column.GetCellContent(item) as TextBlock).Text;
+                string Pc_Name = (dgvipconfig.SelectedCells[3].Column.GetCellContent(item) as TextBlock).Text;
+                string Office = (dgvipconfig.SelectedCells[4].Column.GetCellContent(item) as TextBlock).Text;
+                string Full_Name = (dgvipconfig.SelectedCells[5].Column.GetCellContent(item) as TextBlock).Text;
 
-                            cmdDeleteActivity.ExecuteNonQuery();
-                            con.Close();
-                        }
-                    }
-                    catch (Exception ex)
+                using (SqlConnection con = new SqlConnection())
+                {
+                    con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\DB.mdf;Integrated Security=True;Trusted_Connection=Yes;";
+                    string commandText = "UPDATE dbo.Ip_config SET [IP_IN]='" + IP_IN + "', [IP_OUT]='" + IP_OUT + "' , [Pc_Name]='" + Pc_Name + "' ,[Office]='" + Office + "' ," +
+                        "[Full_Name]='" + Full_Name + "' WHERE [Ip_ID] = '" + ID + "'";;
+
+                    using (SqlConnection conn = new SqlConnection(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\DB.mdf;Integrated Security=True;Trusted_Connection=Yes;"))
+                    using (SqlCommand cmd = new SqlCommand(commandText, conn))
                     {
-                        MessageBox.Show(ex.Message);
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        conn.Close();
                     }
+                    con.Close();
                 }
             }
-
-            using (SqlConnection con = new SqlConnection())
-            {
-                con.ConnectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\DB.mdf;Integrated Security=True;Trusted_Connection=Yes;";
-                con.Open();
-                SqlDataAdapter da = new SqlDataAdapter("SELECT [Ip_ID],[IP_IN],[IP_OUT],[Pc_Name],[Office],[Full_Name] FROM dbo.Ip_config", con);
-                DataTable dt = new DataTable("Fill Ip_conf");
-                da.Fill(dt);
-                DataGrid dg = new DataGrid();
-                dgvipconfig.ItemsSource = dt.DefaultView;
-                con.Close();
-            }
+            fillipconfig();
         }
 
 
